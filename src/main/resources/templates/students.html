@@ -1,17 +1,38 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Students</title>
-</head>
-<body>
-
-    <h1 th:text="${message}"></h1>
-
     <!-- th:text is a Thymeleaf attribute that sets the element's text.
     ${message} asks Thymeleaf to look for a model attribute named message.
     Thymeleaf replaces the element's text with the value found in the Model. -->
 
-    <p>This is our first Spring MVC + Thymeleaf page.</p>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Student Management System</title>
+</head>
+<body>
+    <h1>Student Management System</h1>
 
+    <p th:if="${
+        #lists.isEmpty(students)
+    }">
+        No students found.
+    </p>
+
+    <table th:unless="${
+        #lists.isEmpty(students)
+    }" border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="student : ${students}">
+                <td th:text="${student.id}"></td>
+                <td th:text="${student.name}"></td>
+                <td th:text="${student.email}"></td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>
