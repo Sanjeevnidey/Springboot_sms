@@ -19,4 +19,11 @@ public class StudentService {
     public List<Student> getAllStudents() {
         return studentRepository.findAll();  //It asks the Repository to fetch the students from PostgreSQL.
     }
+
+    // This creates a Student object and saves it to PostgreSQL through StudentRepository.
+    public void saveStudent(String name, String email) {
+        Student student = new Student(name, email);
+        studentRepository.save(student);
+    }
+
 }

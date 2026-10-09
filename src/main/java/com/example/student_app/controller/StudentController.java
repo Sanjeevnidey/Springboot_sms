@@ -7,12 +7,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.util.*;
 
 @Controller
 public class StudentController {
 
-    private final StudentService studentService; //Spring automatically supplies the StudentService object when it creates the Controller.
+    private final StudentService studentService; // Spring automatically supplies the StudentService object when it creates the Controller.
 
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
@@ -24,4 +28,23 @@ public class StudentController {
         model.addAttribute("students", students);
         return "students";
     }
+
+    @PostMapping("/students")
+    public String addStudent(
+            @RequestParam String name,
+            @RequestParam String email,
+            RedirectAttributes redirectAttributes) {
+        // RedirectAttributes is an object provided by Spring MVC. It lets you pass data
+        // to the page you redirect to.
+        
+        studentService.saveStudent(name, email); // buisness logic
+
+        redirectAttributes.addFlashAttribute( //It stores a temporary message under the key "message".
+                "message", "Student added successfully!");
+
+        return "redirect:/students";
+    }
+    // The redirect reloads the student list after saving. This helps prevent
+    // accidental duplicate submissions when the page is refreshed.
+
 }
