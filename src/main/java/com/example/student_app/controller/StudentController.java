@@ -66,4 +66,29 @@ public class StudentController {
         return "student_details";
     }
 
+    @GetMapping("/students/edit/{id}")
+        public String editStudent(@PathVariable Long id, Model model) {
+
+            Student student = studentService.getStudentById(id)
+                    .orElseThrow(() -> new RuntimeException("Student not found"));
+
+            model.addAttribute("student", student);
+
+            return "edit_student";
+        }
+
+    @PostMapping("/students/update")
+    public String updateStudent(
+            @RequestParam Long id,
+            @RequestParam String name,
+            @RequestParam String email,
+            RedirectAttributes redirectAttributes) {
+
+        studentService.updateStudent(id, name, email);
+
+        redirectAttributes.addFlashAttribute(
+                "message", "Student updated successfully!");
+
+        return "redirect:/students";
+    }
 }
