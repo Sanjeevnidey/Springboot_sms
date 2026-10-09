@@ -91,4 +91,19 @@ public class StudentController {
 
         return "redirect:/students";
     }
+
+
+    @PostMapping("/students/delete/{id}")
+    public String deleteStudent(
+            @PathVariable Long id,
+            RedirectAttributes redirectAttributes) {
+
+        studentService.deleteStudent(id);
+
+        redirectAttributes.addFlashAttribute(
+                "message", "Student deleted successfully!");
+
+        return "redirect:/students";
+    }
+
 }
