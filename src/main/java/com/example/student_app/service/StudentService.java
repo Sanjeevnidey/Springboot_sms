@@ -4,7 +4,7 @@ import com.example.student_app.entity.Student;
 import com.example.student_app.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 
 @Service //tells Spring that this class provides application/business logic
@@ -25,5 +25,9 @@ public class StudentService {
         Student student = new Student(name, email);
         studentRepository.save(student);
     }
+
+    public Optional<Student> getStudentById(Long id) {
+    return studentRepository.findById(id);
+}
 
 }

@@ -7,18 +7,31 @@
 
 <p th:if="${message}" th:text="${message}"></p>
 
-<form th:action="@{/students}" method="post"> <!--  sends the form to /students. -->
-    <label>Name:</label>
-    <input type="text" name="name" required>
 
-    <br><br>
+<table th:unless="${#lists.isEmpty(students)}" border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+    </thead>
 
-    <label>Email:</label>
-    <input type="email" name="email" required>
+    <tbody>
+        <tr th:each="student : ${students}">
+            <td th:text="${student.id}"></td>
+            <td th:text="${student.name}"></td>
+            <td th:text="${student.email}"></td>
 
-    <br><br>
-
-    <button type="submit">Add Student</button>
-</form>
+            <!-- View link  -->
+            <td>
+                <a th:href="@{/students/{id}(id=${student.id})}">
+                    View
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 <hr>

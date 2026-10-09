@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.*;
 
 @Controller
@@ -46,5 +50,20 @@ public class StudentController {
     }
     // The redirect reloads the student list after saving. This helps prevent
     // accidental duplicate submissions when the page is refreshed.
+
+    @GetMapping("/students/{id}")
+    public String studentDetails(
+            @PathVariable Long id,
+            Model model) {
+
+        Student student = studentService.getStudentById(id)
+            .orElseThrow(() ->
+                new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Student not found"));
+
+        model.addAttribute("student", student); //passes the student to Thymeleaf.
+
+        return "student_details";
+    }
 
 }
