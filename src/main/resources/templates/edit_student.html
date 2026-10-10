@@ -1,30 +1,44 @@
 
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Student</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
 </head>
+
 <body>
-    <h1>Edit Student</h1>
+    <div class="card">
+        <h1>Edit Student</h1>
+        <p class="subtitle">Update the student's information below.</p>
 
-    <form th:action="@{/students/update}" method="post">
+        <form th:action="@{/students/update}" method="post">
 
-        <input type="hidden" name="id" th:value="${student.id}">
+            <input type="hidden" name="id" th:value="${student.id}">
 
-        <label>Name:</label>
-        <input type="text" name="name"
-               th:value="${student.name}" required>
-        <br><br>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input id="name"
+                       type="text"
+                       name="name"
+                       th:value="${student.name}"
+                       required>
+            </div>
 
-        <label>Email:</label>
-        <input type="email" name="email"
-               th:value="${student.email}" required>
-        <br><br>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email"
+                       type="email"
+                       name="email"
+                       th:value="${student.email}"
+                       required>
+            </div>
 
-        <button type="submit">Update Student</button>
-    </form>
-
-    <br>
-    <a th:href="@{/students}">Cancel</a>
+            <button type="submit">Update Student</button>
+            <a th:href="@{/students}">Cancel</a>
+        </form>
+    </div>
 </body>
 </html>
