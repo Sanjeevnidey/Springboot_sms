@@ -15,6 +15,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.util.*;
 
 @Controller
@@ -28,26 +37,33 @@ public class StudentController {
 
     @GetMapping("/students")
     public String students(Model model) {
-        List<Student> students = studentService.getAllStudents();
-        model.addAttribute("students", students);
+        model.addAttribute("students", studentService.getAllStudents());
+        model.addAttribute("student", new Student());
         return "students";
     }
 
+
+    
     @PostMapping("/students")
     public String addStudent(
-            @RequestParam String name,
-            @RequestParam String email,
-            RedirectAttributes redirectAttributes) {
-        // RedirectAttributes is an object provided by Spring MVC. It lets you pass data
-        // to the page you redirect to.
-        
-        studentService.saveStudent(name, email); // buisness logic
+            @Valid @ModelAttribute("student") Student student,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            Model model) {
 
-        redirectAttributes.addFlashAttribute( //It stores a temporary message under the key "message".
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("students", studentService.getAllStudents());
+            return "students";
+        }
+
+        studentService.saveStudent(student.getName(), student.getEmail());
+
+        redirectAttributes.addFlashAttribute(
                 "message", "Student added successfully!");
 
         return "redirect:/students";
     }
+
     // The redirect reloads the student list after saving. This helps prevent
     // accidental duplicate submissions when the page is refreshed.
 
